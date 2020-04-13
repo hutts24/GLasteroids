@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <blah/blah.h>
+#include <blah.h>
 
 #include "glast.h"
 #include "glast_control.h"
@@ -11,11 +11,11 @@
 
 /* Functions */
 
-blah_bool ship_control(Blah_Entity *ship, Blah_Entity_Event *control_event) {
+bool ship_control(Blah_Entity *ship, Blah_Entity_Event *control_event) {
 	//Event handling function for ship when receiving a control event
 	//fprintf(stderr,"enter ship_control\n");
-	
-	
+
+
 	switch (((Control_Event_Data*)control_event->eventData)->type) {
 		case CONTROL_YAW_LEFT :
 			Blah_Entity_rotateEuler(ship, 0, .1, 0);
@@ -32,15 +32,15 @@ blah_bool ship_control(Blah_Entity *ship, Blah_Entity_Event *control_event) {
 		case CONTROL_SHOOT :
 			ship_shoot(ship);
 			break;
-		case CONTROL_THRUST : //Add velocity to ship in direction facing	
+		case CONTROL_THRUST : //Add velocity to ship in direction facing
 			ship_thrust(ship);
 			break;
 		default:
 			break;
 	}
-	
+
 	//fprintf(stderr,"exit ship_control\n");
-	return BLAH_TRUE;
+	return true;
 }
 
 Blah_Entity_Event *control_event_new(Control_Event_Type type) {

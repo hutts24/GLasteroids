@@ -2,7 +2,7 @@
 
 #define _SHIP
 
-#include <blah/blah.h>
+#include <blah.h>
 
 /* Constant Definitions */
 

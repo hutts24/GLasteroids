@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <blah/blah.h>
+#include <blah.h>
 
 #include "glast.h"
 #include "glast_input.h"

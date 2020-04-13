@@ -4,7 +4,7 @@
 
 #define _GLAST_CONTROL
 
-#include <blah/blah.h>
+#include <blah.h>
 
 /* Structure Definitions */
 
@@ -16,6 +16,6 @@ typedef struct Control_Event_Data {
 } Control_Event_Data;
 
 Blah_Entity_Event *control_event_new(Control_Event_Type type);
-blah_bool ship_control(Blah_Entity *ship, Blah_Entity_Event *control_event);
+bool ship_control(Blah_Entity *ship, Blah_Entity_Event *control_event);
 
 #endif

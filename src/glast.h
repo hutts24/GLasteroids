@@ -7,7 +7,7 @@
 /* FIXME - externs */
 extern int *global_argc;
 extern char** global_argv;
-extern blah_bool cockpit_view;
+extern bool cockpit_view;
 extern Blah_Entity *ship;  //player's ship entity
 extern Blah_Point external_viewpoint;
 extern Blah_Overlay_Text *score_text;

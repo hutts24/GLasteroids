@@ -4,7 +4,7 @@
 
 #define _GLAST_INPUT
 
-#include <blah/blah.h>
+#include <blah.h>
 
 /* Structure Definitions */
 
