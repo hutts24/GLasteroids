@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <signal.h>
 
 #include <blah.h>
 
@@ -193,37 +194,37 @@ static Blah_Scene_Object *axes_new() {
 	Blah_Vertex *x2 = Blah_Object_addVertex(axes,AST_WORLD_RIGHT,-20,-20);
 	Blah_Vertex *x3 = Blah_Object_addVertex(axes,AST_WORLD_RIGHT,20,-20);
 	Blah_Vertex *x4 = Blah_Object_addVertex(axes,AST_WORLD_RIGHT,-20,20);
-	Blah_Vertex *x_axis[] = {origin,far_x,x1,x2,x3,x4,NULL};
+	Blah_Vertex *x_axis[] = {origin,far_x,x1,x2,x3,x4};
 
 	Blah_Vertex *far_y = Blah_Object_addVertex(axes,0,1000,0);
 	Blah_Vertex *y1 = Blah_Object_addVertex(axes,20,AST_WORLD_TOP,20);
 	Blah_Vertex *y2 = Blah_Object_addVertex(axes,-20,AST_WORLD_TOP,-20);
 	Blah_Vertex *y3 = Blah_Object_addVertex(axes,20,AST_WORLD_TOP,-20);
 	Blah_Vertex *y4 = Blah_Object_addVertex(axes,-20,AST_WORLD_TOP,20);
-	Blah_Vertex *y_axis[] = {origin,far_y,y1,y2,y3,y4,NULL};
+	Blah_Vertex *y_axis[] = {origin,far_y,y1,y2,y3,y4};
 
 	Blah_Vertex *far_z = Blah_Object_addVertex(axes,0,0,1000);
 	Blah_Vertex *z1 = Blah_Object_addVertex(axes,20,20,AST_WORLD_FRONT);
 	Blah_Vertex *z2 = Blah_Object_addVertex(axes,-20,-20,AST_WORLD_FRONT);
 	Blah_Vertex *z3 = Blah_Object_addVertex(axes,-20,20,AST_WORLD_FRONT);
 	Blah_Vertex *z4 = Blah_Object_addVertex(axes,20,-20,AST_WORLD_FRONT);
-	Blah_Vertex *z_axis[] = {origin,far_z,z1,z2,z3,z4,NULL};
+	Blah_Vertex *z_axis[] = {origin,far_z,z1,z2,z3,z4};
 
-	axis_x = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, x_axis, sizeof(x_axis) / sizeof (Blah_Vertex));
+	axis_x = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, x_axis, blah_countof(x_axis));
 	//Blah_Primitive_set_colour(axis_x,1, 0, 0, 1);
 	red = Blah_Material_new();Blah_Material_setColour(red, 1, 0, 0, 1);
 	Blah_Object_addMaterial(axes, red);
 	Blah_Primitive_setMaterial(axis_x, red);
 	Blah_Object_addPrimitive(axes, axis_x);
 
-	axis_y = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, y_axis, sizeof(y_axis) / sizeof (Blah_Vertex));
+	axis_y = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, y_axis, blah_countof(y_axis));
 	//Blah_Primitive_set_colour(axis_y, 0, 1 , 0, 1);
 	green = Blah_Material_new();Blah_Material_setColour(green, 0, 1, 0, 1);
 	Blah_Object_addMaterial(axes, green);
 	Blah_Primitive_setMaterial(axis_y, green);
 	Blah_Object_addPrimitive(axes, axis_y);
 
-	axis_z = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, z_axis, sizeof(z_axis) / sizeof (Blah_Vertex));
+	axis_z = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, z_axis, blah_countof(z_axis));
 	//Blah_Primitive_set_colour(axis_z, 0, 0, 1, 1);
 	blue = Blah_Material_new();Blah_Material_setColour(blue, 0, 0, 1, 1);
 	Blah_Object_addMaterial(axes, blue);
@@ -245,26 +246,23 @@ static Blah_Scene_Object *walls_new() {
 	Blah_Vertex *left_bottom_front = Blah_Object_addVertex(walls, AST_WORLD_LEFT, AST_WORLD_BOTTOM, AST_WORLD_FRONT);
 	Blah_Vertex *right_bottom_front = Blah_Object_addVertex(walls, AST_WORLD_RIGHT, AST_WORLD_BOTTOM, AST_WORLD_FRONT);
 
-	Blah_Vertex *back_wall_seq[] = {left_top_back, right_top_back, right_bottom_back,
-		left_bottom_back, NULL};
-	Blah_Vertex *left_wall_seq[] = {left_top_front, left_top_back, left_bottom_back,
-		left_bottom_front, NULL};
-	Blah_Vertex *bottom_wall_seq[] = {left_bottom_back, right_bottom_back, right_bottom_front,
-		left_bottom_front, NULL};
+	Blah_Vertex *back_wall_seq[] = {left_top_back, right_top_back, right_bottom_back, left_bottom_back};
+	Blah_Vertex *left_wall_seq[] = {left_top_front, left_top_back, left_bottom_back, left_bottom_front};
+	Blah_Vertex *bottom_wall_seq[] = {left_bottom_back, right_bottom_back, right_bottom_front, left_bottom_front};
 
 	Blah_Point map_top_left = {0,1,0}; Blah_Point map_top_right = {1,1,0};
 	Blah_Point map_bottom_left = {0,0,0}; Blah_Point map_bottom_right = {1,0,0};
 	const Blah_Point *back_mapping[] = {&map_top_right, &map_top_left, &map_bottom_left, &map_bottom_right, NULL};
 
-	Blah_Primitive *back_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, back_wall_seq, sizeof(back_wall_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *back_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, back_wall_seq, blah_countof(back_wall_seq));
 	Blah_Primitive_mapTexture(back_wall, temp_texture, back_mapping);
 	Blah_Object_addPrimitive(walls, back_wall);
 
-	Blah_Primitive *left_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, left_wall_seq, sizeof(left_wall_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *left_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, left_wall_seq, blah_countof(left_wall_seq));
 	Blah_Primitive_mapTextureAuto(left_wall, temp_texture);
 	Blah_Object_addPrimitive(walls, left_wall);
 
-	Blah_Primitive *bottom_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, bottom_wall_seq, sizeof(bottom_wall_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *bottom_wall = Blah_Primitive_new(BLAH_PRIMITIVE_POLYGON, bottom_wall_seq, blah_countof(bottom_wall_seq));
 	Blah_Primitive_mapTextureAuto(bottom_wall, temp_texture);
 	Blah_Object_addPrimitive(walls, bottom_wall);
 
@@ -278,25 +276,21 @@ static Blah_Scene_Object *walls_new() {
 	Blah_Vertex *f_left_bottom_front = Blah_Object_addVertex(walls, AST_WORLD_LEFT+10, AST_WORLD_BOTTOM+10, AST_WORLD_FRONT-10);
 	Blah_Vertex *f_right_bottom_front = Blah_Object_addVertex(walls, AST_WORLD_RIGHT-10, AST_WORLD_BOTTOM+10, AST_WORLD_FRONT-10);
 
-	Blah_Vertex *back_frame_seq[] = {f_left_top_back, f_right_top_back, f_right_bottom_back,
-		f_left_bottom_back, f_left_top_back, NULL};
-	Blah_Vertex *left_frame_seq[] = {f_left_top_front, f_left_top_back, f_left_bottom_back,
-		f_left_bottom_front, f_left_top_front, NULL};
-	Blah_Vertex *bottom_frame_seq[] = {f_left_bottom_back, f_right_bottom_back, f_right_bottom_front,
-		f_left_bottom_front, f_left_bottom_back, NULL};
-	Blah_Vertex *front_edge_seq[] = {f_right_bottom_front, f_right_top_front, f_left_top_front,
-		f_right_top_front, f_right_top_front, f_right_top_back, NULL};
+	Blah_Vertex *back_frame_seq[] = {f_left_top_back, f_right_top_back, f_right_bottom_back, f_left_bottom_back, f_left_top_back};
+	Blah_Vertex *left_frame_seq[] = {f_left_top_front, f_left_top_back, f_left_bottom_back, f_left_bottom_front, f_left_top_front};
+	Blah_Vertex *bottom_frame_seq[] = {f_left_bottom_back, f_right_bottom_back, f_right_bottom_front, f_left_bottom_front, f_left_bottom_back};
+	Blah_Vertex *front_edge_seq[] = {f_right_bottom_front, f_right_top_front, f_left_top_front, f_right_top_front, f_right_top_front, f_right_top_back};
 
-	Blah_Primitive *back_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, back_frame_seq, sizeof(back_frame_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *back_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, back_frame_seq, blah_countof(back_frame_seq));
 	Blah_Object_addPrimitive(walls, back_frame);
 
-	Blah_Primitive *left_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, left_frame_seq, sizeof(left_frame_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *left_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, left_frame_seq, blah_countof(left_frame_seq));
 	Blah_Object_addPrimitive(walls, left_frame);
 
-	Blah_Primitive *bottom_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, bottom_frame_seq, sizeof(bottom_wall_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *bottom_frame = Blah_Primitive_new(BLAH_PRIMITIVE_LINE_STRIP, bottom_frame_seq, blah_countof(bottom_wall_seq));
 	Blah_Object_addPrimitive(walls, bottom_frame);
 
-	Blah_Primitive *front_edge = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, front_edge_seq, sizeof(front_edge_seq) / sizeof (Blah_Vertex));
+	Blah_Primitive *front_edge = Blah_Primitive_new(BLAH_PRIMITIVE_LINE, front_edge_seq, blah_countof(front_edge_seq));
 	Blah_Object_addPrimitive(walls, front_edge);
 
 	Blah_Material_setColour(new_material, 1, 1, 1, 1);
@@ -337,7 +331,7 @@ static void glast_exit() {
 	Blah_Scene_destroy(glast_scene);
 	fprintf(stderr,"destroyed scene\n");
 
-	blah_engine_exit();
+	// blah_engine_exit();
 	fprintf(stderr,"exited blah\n");
 
 	exit(0);
@@ -356,75 +350,58 @@ static void rotate_view_anticlockwise() {
 }
 
 static void video_up() {
-	Blah_Video_Mode *cur_mode = blah_video_getCurrentMode();
-	Blah_Video_Mode *new_mode;
+	const Blah_Video_Mode* cur_mode = blah_video_getCurrentMode();
 
 	if (cur_mode) {
-		new_mode = blah_video_getNextMode(cur_mode);
+		const Blah_Video_Mode* new_mode = blah_video_getNextMode(cur_mode);
 		if (new_mode) {	blah_video_setMode(new_mode); }
 	}
 }
 
 static void video_down() {
-	Blah_Video_Mode *cur_mode = blah_video_getCurrentMode();
-	Blah_Video_Mode *new_mode;
+	const Blah_Video_Mode* cur_mode = blah_video_getCurrentMode();
 
 	if (cur_mode) {
-		new_mode = blah_video_getPrevMode(cur_mode);
-		if (new_mode)
-			blah_video_setMode(new_mode);
+		const Blah_Video_Mode* new_mode = blah_video_getPrevMode(cur_mode);
+		if (new_mode) {	blah_video_setMode(new_mode); }
 	}
 }
 
 int main(int argc, char** argv) {
-	unsigned int time_seed;
-	Blah_Video_Mode *vm;
-	char tempstring[100];
-
-	//Set up main log file
-	Blah_Debug_Log *glast_log = Blah_Debug_Log_new("glast_log");
+	Blah_Debug_Log *glast_log = Blah_Debug_Log_new("glast_log"); // Set up main log file
 
 	global_argc = &argc;
 	global_argv = argv;
 
 	blah_engine_init(argc, argv);  //initialise engine components
 
-	vm = blah_video_getIdealMode(1600,1200,32);
-	sprintf(tempstring,"Got ideal video mode - %dx%dx%d",vm->width,vm->height,vm->colourDepth);
-	Blah_Debug_Log_message(glast_log,tempstring);
+	const Blah_Video_Mode* vm = blah_video_getIdealMode(1600, 1200, 24);
+	blah_console_message("Got ideal video mode - %dx%dx%d\n", vm->width, vm->height, vm->colourDepth);
 
-	if (!blah_video_setMode(vm))
-		Blah_Debug_Log_message(glast_log,"Set video mode failed");
-
-	Blah_Debug_Log_destroy(glast_log);
+	if (!blah_video_setMode(vm)) { Blah_Debug_Log_error(glast_log, 0, "Set video mode failed"); }
 
 	//Set up drawing environment
 	blah_draw_setFocalPoint(0,0,0); //focus apon origin
-
-	/*	blah_draw_set_focal_point(0,0,0); //focus apon origin
-		blah_draw_set_viewpoint(external_viewpoint.x, external_viewpoint.y, external_viewpoint.z);
-		blah_draw_set_field_of_vision(1.3, 1.3);
-		blah_draw_set_depth_of_vision(AST_WORLD_DEPTH+700);
-		blah_draw_set_view_normal(0,1,0); */
-
 	blah_draw_setViewpoint((AST_WORLD_RIGHT+100),(AST_WORLD_TOP-200),AST_WORLD_DEPTH/2);
 	blah_draw_setFieldOfVision(1.6, 1.6);
 	blah_draw_setDepthOfVision(AST_WORLD_DEPTH+1000);
 	blah_draw_setViewNormal(0,1,0);
 
 	temp_image = Blah_Image_fromFile("tadmap.tga");
-	fprintf(stderr, "opened tadmap.tga\n");
+	blah_console_message("opened tadmap.tga\n");
 
 	temp_texture = Blah_Texture_fromImage(temp_image);
 
-	fprintf(stderr, "Made texture from image.\n");
+	blah_console_message("Made texture from image.\n");
 
 	bullet_image = Blah_Image_fromFile("bullet.tga");
 	copy_image = Blah_Image_fromImage(bullet_image, "bullet_copy", 0, bullet_image->width/2-1, 0, bullet_image->height/2-1);
-	fprintf(stderr, "Made copy of image\n");
+	blah_console_message("Made copy of image\n");
 
 	bullet_texture = Blah_Texture_fromImage(bullet_image);
-	/* Load models into memory */
+	blah_console_message("Made bullet texture from image");
+
+	// Load models into memory
 	voyager_model = Blah_Model_load("voyager.lwo");
 	Blah_Model_scale(voyager_model, 1);
 	fighter_model = Blah_Model_load("storm.lwo");
@@ -434,9 +411,9 @@ int main(int argc, char** argv) {
 	alien_model = Blah_Model_load("alien.lwo");
 	Blah_Model_scale(alien_model, 70);
 
-	fprintf(stderr, "loaded all models\n");
+	blah_console_message("loaded all models\n");
 
-	time_seed=time(NULL);
+	unsigned int time_seed = time(NULL);
 	srand(time_seed);	//seed random generator
 
 	//Load the font
@@ -504,8 +481,9 @@ int main(int argc, char** argv) {
 
 	while (1) {
 		blah_engine_main();
-		//Blah_Scene_draw(glast_scene);
 	}
+
+	Blah_Debug_Log_destroy(glast_log);
 
 	return 0;
 }

@@ -8,6 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/GLasteroids" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Debug/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -36,27 +37,27 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../../GLasteroids/src/asteroid.c">
+		<Unit filename="../src/asteroid.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../GLasteroids/src/asteroid.h" />
-		<Unit filename="../../GLasteroids/src/glast.c">
+		<Unit filename="../src/asteroid.h" />
+		<Unit filename="../src/glast.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../GLasteroids/src/glast.h" />
-		<Unit filename="../../GLasteroids/src/glast_control.c">
+		<Unit filename="../src/glast.h" />
+		<Unit filename="../src/glast_control.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../GLasteroids/src/glast_control.h" />
-		<Unit filename="../../GLasteroids/src/glast_entity.h" />
-		<Unit filename="../../GLasteroids/src/glast_input.c">
+		<Unit filename="../src/glast_control.h" />
+		<Unit filename="../src/glast_entity.h" />
+		<Unit filename="../src/glast_input.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../GLasteroids/src/glast_input.h" />
-		<Unit filename="../../GLasteroids/src/ship.c">
+		<Unit filename="../src/glast_input.h" />
+		<Unit filename="../src/ship.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../GLasteroids/src/ship.h" />
+		<Unit filename="../src/ship.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
