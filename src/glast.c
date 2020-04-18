@@ -145,9 +145,7 @@ static Blah_Font *load_raster_font() {
 	font_map['|']=3;font_map['\\']=4;font_map[' ']=5;
 
 	test_font_image = Blah_Image_fromFile("glastfont16x16.tga");
-	//fprintf(stderr,"loaded glastfont.tga");
 	test_font = Blah_Font_new(BLAH_FONT_TEXTURE, "texfont", test_font_image, font_map, 16, 16);
-	//fprintf(stderr,"made font from glastfont.tga");
 	Blah_Image_destroy(test_font_image);
 
 	return test_font;
@@ -325,14 +323,10 @@ static void glast_exit() {
 	// The asteroid list is the only structure owned by Glasteroids,
 
 	free_asteroid_list(asteroid_list);
-	fprintf(stderr,"freed asteroids\n");
 	// Let engine garbage collection take care of other structures
 
 	Blah_Scene_destroy(glast_scene);
-	fprintf(stderr,"destroyed scene\n");
 
-	// blah_engine_exit();
-	fprintf(stderr,"exited blah\n");
 
 	exit(0);
 }
@@ -477,7 +471,7 @@ int main(int argc, char** argv) {
 	blah_input_keyboard_setHoldFunction(BLAH_INPUT_KEY_LEFT_SHIFT, glast_input_lshift);
 	blah_input_keyboard_setHoldFunction(BLAH_INPUT_KEY_SPACE, glast_input_space);
 
-	fprintf(stderr,"entering main loop\n");
+	blah_console_message("GLasteroids entering main loop");
 
 	while (1) {
 		blah_engine_main();

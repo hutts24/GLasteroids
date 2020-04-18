@@ -28,7 +28,7 @@ void asteroid_change_colour(Blah_Entity *asteroid) {
 }
 
 void asteroid_dump(Blah_Entity *asteroid) {
-	fprintf(stderr,"asteroid name:%s\n",asteroid->name);
+	blah_console_message("Asteroid name: %s", asteroid->name);
 }
 
 bool asteroid_explode(Blah_Entity *asteroid_ptr, Blah_Entity_Event *event) {
@@ -61,15 +61,11 @@ bool asteroid_explode(Blah_Entity *asteroid_ptr, Blah_Entity_Event *event) {
 
 Blah_Entity *asteroid_new(float size, int type) {
 	//All properties are randomly assigned
-	Blah_Entity *new_ast;
-	Blah_Object *new_object;
-	ASTEROID_DATA *ast_data;
-//	FILE *tanker_file;
-	Blah_Material *new_material;
+	Blah_Entity* new_ast;
+	Blah_Object* new_object;
+	ASTEROID_DATA* ast_data;
+	Blah_Material* new_material;
 
-	//fprintf(stderr,"creating new asteroid");
-
-//	float radius = size * 20;
 	char temp_name[20];
 
 	sprintf(temp_name,"Ast#%d",type);
@@ -91,10 +87,6 @@ Blah_Entity *asteroid_new(float size, int type) {
 
 	Blah_Entity_setCollisionFunction(new_ast,(blah_entity_collision_func*)asteroid_collision_handler);
 	Blah_Entity_setActiveCollision(new_ast,true);
-
-	//new_object = Blah_Object_new(new_ast); //Add all vertices to the asteroid object
-
-	//fprintf(stderr,"creating object from sputnik model\n");
 
 	switch (type) {
 		case 0:
@@ -123,14 +115,6 @@ Blah_Entity *asteroid_new(float size, int type) {
 			break;
 	}
 
-	//fprintf(stderr,"call to colour\n");
-	//Blah_Object_colour(new_object,(float)blah_util_randRangeInt(0,1000)/1000.0,
-	//	(float)blah_util_randRangeInt(0,1000)/1000.0,(float)blah_util_randRangeInt(0,1000)/1000.0);
-	//Blah_Object_map_texture_auto(new_object, ast_texture);
-	//fprintf(stderr,"end colour\n");
-	//fprintf(stderr, "set colour to asteroid object from file");
-
-	//fprintf(stderr, "added asteroid object to asteroid");
 	new_ast->rotationAxisX = .01;
 	new_ast->rotationAxisY = .02;
 
@@ -141,12 +125,15 @@ Blah_Entity *asteroid_new(float size, int type) {
 
 void asteroid_move(Blah_Entity *astp) {
 
-	if ((astp->location.x<AST_WORLD_LEFT) || (astp->location.x>AST_WORLD_RIGHT))
+	if ((astp->location.x<AST_WORLD_LEFT) || (astp->location.x>AST_WORLD_RIGHT)) {
 		astp->velocity.x=-astp->velocity.x;
-	if ((astp->location.y<AST_WORLD_BOTTOM) || (astp->location.y>AST_WORLD_TOP))
+	}
+	if ((astp->location.y<AST_WORLD_BOTTOM) || (astp->location.y>AST_WORLD_TOP)) {
 		astp->velocity.y=-astp->velocity.y;
-	if ((astp->location.z<AST_WORLD_BACK) || (astp->location.z>AST_WORLD_FRONT))
+	}
+	if ((astp->location.z<AST_WORLD_BACK) || (astp->location.z>AST_WORLD_FRONT)) {
 		astp->velocity.z=-astp->velocity.z;
+	}
 }
 
 static void asteroid_shrink(Blah_Point *p) {
@@ -160,16 +147,17 @@ bool asteroid_destroy(Blah_Entity *asteroid, Blah_Entity_Event *dest_event) {
 	Blah_Scene_removeEntity(glast_scene, asteroid);
 	Blah_List_removeElement(asteroid_list, asteroid); //have to remove it from list of asteroids
 	Blah_Entity_destroy(asteroid);
-	if (asteroid_list->length < 16)
+	if (asteroid_list->length < 16) {
 		Blah_List_insertElement(asteroid_list, asteroid_new(AST_NEW_SIZE, blah_util_randRangeInt(0,2)));
-	//fprintf(stderr,"asteroid destroyed\n");
+	}
 
 	return false;	//don't continue processing events
 }
 
 static void asteroid_collision_handler(Blah_Entity *asteroid, Blah_Entity *other) {
-	if (other->type==GLAST_ENTITY_SHIP_BULLET) // || other->type==GLAST_ENTITY_ASTEROID)
+	if (other->type==GLAST_ENTITY_SHIP_BULLET) { // || other->type==GLAST_ENTITY_ASTEROID)
 		Blah_Entity_sendEvent(asteroid, Blah_Entity_Event_new("ASTEROID EXPLODE", asteroid, asteroid_explode, 0));
+	}
 
 	//else ignore all other collisions for this moment
 }

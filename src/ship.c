@@ -90,10 +90,8 @@ static bool bullet_destroy(Blah_Entity *bullet, Blah_Entity_Event *dest_event) {
 
 
 static void bullet_collide(Blah_Entity *bullet, Blah_Entity *other) {
-	//fprintf(stderr,"bullet collide\n");
 	if (other->type == GLAST_ENTITY_ASTEROID) {  //If bullet is colliding with an asteroid
 		Blah_Entity_sendEvent(bullet, Blah_Entity_Event_new("DESTROY", NULL, bullet_destroy,0)); //Tell bullet to die
-		//fprintf(stderr,"Called asteroid explode\n");
 	}
 }
 
@@ -101,15 +99,10 @@ void bullet_move(Blah_Entity *bullet) {
 	Bullet_Data *bul_dat = (Bullet_Data*)bullet->entityData;
 
 
-	//fprintf(stderr,"bullet move\n");
 	bul_dat->distance-=(int)Blah_Vector_getMagnitude(&bullet->velocity);
-	//fprintf(stderr,"blah\n");
 	if (bul_dat->distance < 0) {
 		Blah_Entity_sendEvent(bullet, Blah_Entity_Event_new("DESTROY", bullet, bullet_destroy,0)); //Tell bullet to die
 	}
-	//fprintf(stderr,"exit bullet move");
-
-
 }
 
 void ship_shoot(Blah_Entity *ship) {
