@@ -13,12 +13,12 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
 					<Add option="-g" />
-					<Add directory="D:/Source/Jamie/Blah/src" />
+					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
-					<Add library="blah" />
-					<Add directory="D:/Source/Jamie/Blah/.cbp/bin/Debug" />
+					<Add option="-pg -lgmon" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -36,7 +36,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="D:/Source/Jamie/Blah/src" />
 		</Compiler>
+		<Linker>
+			<Add library="blah" />
+			<Add directory="D:/Source/Jamie/Blah/.cbp/bin/Debug" />
+		</Linker>
 		<Unit filename="../src/asteroid.c">
 			<Option compilerVar="CC" />
 		</Unit>
