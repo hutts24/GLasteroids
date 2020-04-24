@@ -42,9 +42,6 @@
 			<Add library="blah" />
 			<Add directory="D:/Source/Jamie/Blah/.cbp/bin/Debug" />
 		</Linker>
-		<ExtraCommands>
-			<Add before="cmd /C copy /Y $(PROJECT_TOPDIR)..\Blah\.cbp\bin\$(TARGET_NAME)\blah.dll $(TARGET_OUTPUT_DIR)\" />
-		</ExtraCommands>
 		<Unit filename="../src/asteroid.c">
 			<Option compilerVar="CC" />
 		</Unit>
